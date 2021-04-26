@@ -41,6 +41,7 @@ export default {
     draggableTable: 'Draggable Table',
     inlineEditTable: 'Inline Edit Table',
     complexTable: 'Complex Table',
+    testTable: 'Test Table',
     tab: 'Tab',
     form: 'Form',
     createArticle: 'Create Article',
@@ -132,7 +133,20 @@ export default {
     draft: 'Draft',
     delete: 'Delete',
     cancel: 'Cancel',
-    confirm: 'Confirm'
+    confirm: 'Confirm',
+    // 测试表格
+    CRM_CODE: 'CRM_CODE',
+    CRM_TYPE: 'CRM_TYPE',
+    CCY_CODE: 'CCY_CODE',
+    CRM_VALUE_ORI: 'CRM_VALUE_ORI',
+    CRM_CP_TYPE: 'CRM_CP_TYPE',
+    CRM_CPC: 'CRM_CPC',
+    CRM_ST_RATING: 'CRM_ST_RATING',
+    CRM_LT_RATING: 'CRM_LT_RATING',
+    update: 'update',
+    startDate: 'startDate',
+    endDate: 'endDate',
+    CRM_CP_RATING: 'CRM_CP_RATING'
   },
   example: {
     warning: 'Creating and editing pages cannot be cached by keep-alive because keep-alive\'s \'include\' currently does not support caching based on routes, so now it\'s cached based on component name. If you want to achieve a similar caching effect, you can use a browser caching scheme such as localStorage. Or don\'t use keep-alive\'s \'include\' to cache all pages directly. See details'
