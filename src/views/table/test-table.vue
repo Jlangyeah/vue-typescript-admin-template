@@ -2,7 +2,7 @@
   <div>
     <el-table :data="releaseData" fit highlight-current-row style="width: 100%">
       <el-table-column type=index prop="CRM_CODE" :label="$t('table.CRM_CODE')" align="center" width="95"></el-table-column>
-      <el-table-column prop="CRM_TYPE" :label="$t('table.CRM_TYPE')" align="center" class-name="" width="120"></el-table-column>
+      <el-table-column prop="CRM_TYPE" :label="$t('table.CRM_TYPE')" align="center" class-name="" width="110"></el-table-column>
       <el-table-column prop="CCY_CODE" :label="$t('table.CCY_CODE')" align="center"></el-table-column>
       <el-table-column prop="CRM_VALUE_ORI" :label="$t('table.CRM_VALUE_ORI')" align="center"></el-table-column>
       <el-table-column prop="CRM_CP_TYPE" :label="$t('table.CRM_CP_TYPE')" align="center"></el-table-column>
@@ -16,7 +16,7 @@
 
     <!-- 修改缓释品对话框 -->
     <el-dialog title="新增缓释品" :visible="updateReleaseDia" width="85%" @close="updateDialogClosed">
-      <el-form inline label-width='120px' label-position="left">
+      <el-form inline label-width='110px' label-position="left">
         <el-row>
           <el-col :span="8">
             <el-form-item :label="$t('table.CRM_TYPE')" required>
@@ -37,7 +37,7 @@
           </el-col>
         </el-row>
       </el-form>
-      <el-form inline label-width='120px' label-position="left">
+      <el-form inline label-width='110px' label-position="left">
         <el-col :span="8">
           <el-form-item :label="$t('table.CCY_CODE')" required>
             <el-select></el-select>
@@ -49,7 +49,7 @@
           </el-form-item>
         </el-col>
       </el-form>
-      <el-form inline label-width='120px' label-position="left">
+      <el-form inline label-width='110px' label-position="left">
         <el-row>
           <el-col :span="8">
             <el-form-item :label="$t('table.CRM_CP_TYPE')" required>
@@ -68,7 +68,7 @@
           </el-col>
         </el-row>
       </el-form>
-      <el-form inline label-width='120px' label-position="left">
+      <el-form inline label-width='110px' label-position="left">
         <el-row>
           <el-col :span="8">
             <el-form-item :label="$t('table.CRM_ST_RATING')">
