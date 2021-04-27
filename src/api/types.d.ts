@@ -14,6 +14,15 @@ export interface IArticleData {
   reviewer: string
   type: string
   pageviews: number
+  CRM_CODE: string
+  CRM_TYPE: string
+  CCY_CODE: string
+  CRM_VALUE_ORI: number
+  CRM_CP_TYPE: string
+  CRM_CPC: string
+  CRM_ST_RATING: string
+  CRM_LT_RATING: string
+  CRM_CP_RATING:string
 }
 
 export interface IRoleData {

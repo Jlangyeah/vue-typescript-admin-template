@@ -22,7 +22,16 @@ for (let i = 0; i < articleCount; i++) {
     author: faker.name.findName(),
     reviewer: faker.name.findName(),
     type: faker.random.arrayElement(['CN', 'US', 'JP', 'EU']),
-    pageviews: faker.datatype.number({ min: 300, max: 500 })
+    pageviews: faker.datatype.number({ min: 300, max: 500 }),
+    CRM_CODE: String(i),
+    CRM_TYPE: faker.random.arrayElement(['银行秉兑汇票(非特别授权)(ZY030106)', '质押-现金{CASH_CLAT}']),
+    CCY_CODE: faker.random.arrayElement(['人民币(CNY)', '美元(USD)', '日元(JPY)', '欧元(EUR)']),
+    CRM_VALUE_ORI: faker.datatype.number({ min: 500, max: 4000 }),
+    CRM_CP_TYPE: faker.random.arrayElement(['商品银行(BANK)', '一般公司(CORP)']),
+    CRM_CPC: faker.random.arrayElement(['中华人民共和国(CHN)', '美利坚合众国(USA)', '日本国(JPN)']),
+    CRM_ST_RATING: faker.random.arrayElement(['A-1', 'A-2', 'A-3', 'B-1', 'N/A']),
+    CRM_LT_RATING: faker.random.arrayElement(['AAA', 'AA', 'A', 'BBB', 'BB', 'B', 'C', 'N/A']),
+    CRM_CP_RATING: faker.random.arrayElement(['AAA', 'AA', 'A', 'BBB', 'BB', 'B', 'C', 'N/A'])
   })
 }
 
