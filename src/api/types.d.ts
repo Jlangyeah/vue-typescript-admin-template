@@ -22,7 +22,9 @@ export interface IArticleData {
   CRM_CPC: string
   CRM_ST_RATING: string
   CRM_LT_RATING: string
-  CRM_CP_RATING:string
+  CRM_CP_RATING: string
+  START_DT: Date
+  MAT_DT: Date
 }
 
 export interface IRoleData {

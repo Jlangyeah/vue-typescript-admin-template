@@ -144,8 +144,8 @@ export default {
     CRM_ST_RATING: '债券短期评级',
     CRM_LT_RATING: '债券长期评级',
     update: '修改',
-    startDate: '开始日期',
-    endDate: '结束日期',
+    START_DT: '开始日期',
+    MAT_DT: '结束日期',
     CRM_CP_RATING: '交易对手评级'
   },
   example: {

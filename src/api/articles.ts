@@ -25,7 +25,9 @@ export const defaultArticleData: IArticleData = {
   CRM_CPC: '',
   CRM_ST_RATING: '',
   CRM_LT_RATING: '',
-  CRM_CP_RATING: ''
+  CRM_CP_RATING: '',
+  START_DT: new Date(),
+  MAT_DT: new Date()
 }
 export const optionsTypeObj = {
   CRM_TYPE: ['银行秉兑汇票(非特别授权)(ZY030106)', '质押-现金{CASH_CLAT}'],

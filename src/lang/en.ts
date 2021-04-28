@@ -144,8 +144,8 @@ export default {
     CRM_ST_RATING: 'CRM_ST_RATING',
     CRM_LT_RATING: 'CRM_LT_RATING',
     update: 'update',
-    startDate: 'startDate',
-    endDate: 'endDate',
+    START_DT: 'START_DT',
+    MAT_DT: 'MAT_DT',
     CRM_CP_RATING: 'CRM_CP_RATING'
   },
   example: {

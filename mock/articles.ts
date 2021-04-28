@@ -23,7 +23,7 @@ for (let i = 0; i < articleCount; i++) {
     reviewer: faker.name.findName(),
     type: faker.random.arrayElement(['CN', 'US', 'JP', 'EU']),
     pageviews: faker.datatype.number({ min: 300, max: 500 }),
-    CRM_CODE: String(i),
+    CRM_CODE: String(faker.datatype.number({ min: 10000, max: 15000 })),
     CRM_TYPE: faker.random.arrayElement(['银行秉兑汇票(非特别授权)(ZY030106)', '质押-现金{CASH_CLAT}']),
     CCY_CODE: faker.random.arrayElement(['人民币(CNY)', '美元(USD)', '日元(JPY)', '欧元(EUR)']),
     CRM_VALUE_ORI: faker.datatype.number({ min: 500, max: 4000 }),
@@ -31,17 +31,23 @@ for (let i = 0; i < articleCount; i++) {
     CRM_CPC: faker.random.arrayElement(['中华人民共和国(CHN)', '美利坚合众国(USA)', '日本国(JPN)']),
     CRM_ST_RATING: faker.random.arrayElement(['A-1', 'A-2', 'A-3', 'B-1', 'N/A']),
     CRM_LT_RATING: faker.random.arrayElement(['AAA', 'AA', 'A', 'BBB', 'BB', 'B', 'C', 'N/A']),
-    CRM_CP_RATING: faker.random.arrayElement(['AAA', 'AA', 'A', 'BBB', 'BB', 'B', 'C', 'N/A'])
+    CRM_CP_RATING: faker.random.arrayElement(['AAA', 'AA', 'A', 'BBB', 'BB', 'B', 'C', 'N/A']),
+    START_DT: faker.date.soon(),
+    MAT_DT: faker.date.soon()
   })
 }
 
 export const getArticles = (req: Request, res: Response) => {
-  const { importance, type, title, page = 1, limit = 20, sort } = req.query
+  const { importance, type, title, page = 1, limit = 20, sort, CRM_TYPE, CCY_CODE, CRM_ST_RATING } = req.query
 
   let mockList = articleList.filter(item => {
     if (importance && item.importance !== +importance) return false
     if (type && item.type !== type) return false
     if (title && item.title.indexOf(title as string) < 0) return false
+    if (CRM_TYPE && item.CRM_TYPE.indexOf(CRM_TYPE as string) < 0) return false
+    if (CCY_CODE && item.CCY_CODE !== CCY_CODE) return false
+    if (CRM_ST_RATING && item.CRM_ST_RATING !== CRM_ST_RATING) return false
+
     return true
   })
 
