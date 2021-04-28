@@ -8,7 +8,7 @@
       <el-select v-model="listQuery.CRM_ST_RATING" :placeholder="$t('table.CRM_ST_RATING')" clearable class="filter-item" style="width: 130px">
         <el-option v-for="item in CRM_ST_RATING" :key="item" :label="item" :value="item" />
       </el-select>
-      <el-select v-model="listQuery.sort" style="width: 140px" class="filter-item" @change="handleFilter">
+      <el-select v-model="listQuery.sort" style="width: 195px" class="filter-item" @change="handleFilter">
         <el-option v-for="item in sortOptions" :key="item.key" :label="item.label" :value="item.key" />
       </el-select>
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
@@ -21,9 +21,9 @@
         {{ $t('table.export') }}
       </el-button>
     </div>
-    <el-table :data="list" fit highlight-current-row style="width: 100%">
-      <el-table-column :label="$t('table.id')" align="center" width="95" prop="id" sortable="custom"></el-table-column>
-      <el-table-column prop="CRM_CODE" :label="$t('table.CRM_CODE')" align="center" width="95"></el-table-column>
+    <el-table :data="list" fit highlight-current-row style="width: 100%" @sort-change="sortChange">
+      <el-table-column :label="$t('table.id')" align="center" width="95" prop="id" sortable="custom" :class-name="getSortClass('id')"></el-table-column>
+      <el-table-column prop="CRM_CODE" :label="$t('table.CRM_CODE')" align="center" width="120" sortable></el-table-column>
       <el-table-column prop="CRM_TYPE" :label="$t('table.CRM_TYPE')" align="center" class-name="" width="110"></el-table-column>
       <el-table-column prop="CCY_CODE" :label="$t('table.CCY_CODE')" align="center"></el-table-column>
       <el-table-column prop="CRM_VALUE_ORI" :label="$t('table.CRM_VALUE_ORI')" align="center" width="120"></el-table-column>
@@ -172,7 +172,8 @@ export default {
         sort: '+id',
         CRM_TYPE: undefined,
         CCY_CODE: undefined,
-        CRM_ST_RATING: undefined
+        CRM_ST_RATING: undefined,
+        CRM_CODE: undefined
       },
       list: [],
       total: null,
@@ -272,11 +273,15 @@ export default {
       // this.form = cloneDeep(defaultArticleData);
       this.form = {}
     },
+    random(min, max) {
+      return Math.floor(Math.random() * (max - min)) + min
+    },
     createData() {
       this.$refs.dataForm.validate(async(valid) => {
         if (!valid) {
           return console.log('校验失败')
         }
+        this.form.CRM_CODE = String(this.random(1, 15000))
         this.list.unshift(this.form)
         this.dialogFormVisible = false
         this.$notify({
@@ -305,18 +310,24 @@ export default {
     handleDownload() {
       this.downloadLoading = true
       const tHeader = [
-        'CRM_TYPE',
         'START_DT',
         'MAT_DT',
+        'CRM_TYPE',
         'CCY_CODE',
-        'CRM_VALUE_ORI'
+        'CRM_VALUE_ORI',
+        'CRM_CPC',
+        'CRM_ST_RATING',
+        'CRM_LT_RATING'
       ]
       const filterVal = [
-        'CRM_TYPE',
         'START_DT',
         'MAT_DT',
+        'CRM_TYPE',
         'CCY_CODE',
-        'CRM_VALUE_ORI'
+        'CRM_VALUE_ORI',
+        'CRM_CPC',
+        'CRM_ST_RATING',
+        'CRM_LT_RATING'
       ]
       const data = formatJson(filterVal, this.list)
       exportJson2Excel(tHeader, data, 'table-list')
@@ -347,6 +358,32 @@ export default {
           }
         }
       }
+    },
+    sortChange(data) {
+      const { prop, order } = data
+      if (prop === 'id') {
+        this.sortByID(order)
+      }
+    },
+    sortByID(order) {
+      if (order === 'ascending') {
+        this.listQuery.sort = '+id'
+      } else {
+        this.listQuery.sort = '-id'
+      }
+      this.handleFilter()
+    },
+    getSortClass(key) {
+      const sort = this.listQuery.sort
+      return sort === `+${key}` ? 'ascending' : 'descending'
+    },
+    sortByCode(order) {
+      if (order === 'ascending') {
+        this.listQuery.sort = '+id'
+      } else {
+        this.listQuery.sort = '-id'
+      }
+      this.handleFilter()
     }
   },
   created() {
