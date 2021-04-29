@@ -31,8 +31,9 @@
       <el-table-column prop="CRM_CPC" :label="$t('table.CRM_CPC')" align="center" width="180"></el-table-column>
       <el-table-column prop="CRM_ST_RATING" :label="$t('table.CRM_ST_RATING')" align="center" width="110"></el-table-column>
       <el-table-column prop="CRM_LT_RATING" :label="$t('table.CRM_LT_RATING')" align="center" width="110"></el-table-column>
-      <el-table-column :label="$t('table.actions')" width="180">
+      <el-table-column :label="$t('table.actions')" align="center" width="180">
         <template slot-scope="scope">
+          {{$t('table.actions')}}
           <el-button type="warning" size="mini" @click="handleUpdate(scope.row)">
             {{$t('table.edit')}}</el-button>
           <el-button type="danger" size="mini" @click="handleDelete(scope.$index)">
@@ -281,6 +282,7 @@ export default {
         if (!valid) {
           return console.log('校验失败')
         }
+        this.form.id = this.total + 1
         this.form.CRM_CODE = String(this.random(1, 15000))
         this.list.unshift(this.form)
         this.dialogFormVisible = false
