@@ -1,4 +1,5 @@
 import faker from 'faker'
+import fakerCN from 'faker/locale/zh_CN'
 import { Response, Request } from 'express'
 import { IArticleData, ToDoData, ProcessData } from '../src/api/types'
 
@@ -10,14 +11,15 @@ const todoList: ToDoData[] = []
 const todoCount = 100
 
 const processList: ProcessData[] = []
-const processCount = 3
+const processCount = 5
 
+faker.setLocale('zh_CN')
 for (let i = 0; i < processCount; i++) {
   processList.push({
     insOperStatus: faker.random.arrayElement(['提交审批', '撤回审批', '新增审批']),
-    insOperUserName: faker.random.arrayElement(['系统管理员A', '系统管理员B', '系统管理员C']),
+    insOperUserName: faker.random.arrayElement(['系统管理员A', '系统管理员B', '系统管理员C', '系统管理员D', '普通用户E']),
     insOperTime: faker.date.soon(),
-    insOperComments: faker.lorem.sentence(3, 5)
+    insOperComments: faker.internet.userName() + faker.name.firstName()
   })
 }
 
