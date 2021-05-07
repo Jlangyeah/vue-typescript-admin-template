@@ -17,7 +17,7 @@ faker.setLocale('zh_CN')
 for (let i = 0; i < processCount; i++) {
   processList.push({
     insOperStatus: faker.random.arrayElement(['提交审批', '撤回审批', '新增审批']),
-    insOperUserName: faker.random.arrayElement(['系统管理员A', '系统管理员B', '系统管理员C', '系统管理员D', '普通用户E']),
+    insOperUserName: faker.random.arrayElement(['系统管理员A', '系统管理员B', '系统管理员C', '系统管理员D', '系统管理员E']),
     insOperTime: faker.date.soon(),
     insOperComments: faker.internet.userName() + faker.name.firstName()
   })
