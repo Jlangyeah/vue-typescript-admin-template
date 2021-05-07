@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-import { IArticleData } from './types'
+import { IArticleData, ToDoData, ProcessData } from './types'
 
 export const defaultArticleData: IArticleData = {
   id: 0,
@@ -29,6 +29,19 @@ export const defaultArticleData: IArticleData = {
   START_DT: new Date(),
   MAT_DT: new Date()
 }
+
+export const defaultToDoData: ToDoData = {
+  id: 0,
+  PRO_NAME: '',
+  PRO_NODE_NAME: '',
+  LAST_UPDATE_DATE: new Date()
+}
+export const defaultProcessData: ProcessData = {
+  insOperStatus: '',
+  insOperUserName: '',
+  insOperTime: new Date(),
+  insOperComments: ''
+}
 export const optionsTypeObj = {
   CRM_TYPE: ['银行秉兑汇票(非特别授权)(ZY030106)', '质押-现金{CASH_CLAT}'],
   CCY_CODE: ['人民币(CNY)', '美元(USD)', '日元(JPY)', '欧元(EUR)'],
@@ -42,6 +55,20 @@ export const optionsTypeObj = {
 export const getArticles = (params: any) =>
   request({
     url: '/articles',
+    method: 'get',
+    params
+  })
+
+export const getTodoArticles = (params: any) =>
+  request({
+    url: '/process_logs',
+    method: 'get',
+    params
+  })
+
+export const getProcessLogs = (params: any) =>
+  request({
+    url: '/process',
     method: 'get',
     params
   })

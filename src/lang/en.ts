@@ -42,6 +42,7 @@ export default {
     inlineEditTable: 'Inline Edit Table',
     complexTable: 'Complex Table',
     testTable: 'Test Table',
+    todoList: 'Todo List',
     tab: 'Tab',
     form: 'Form',
     createArticle: 'Create Article',

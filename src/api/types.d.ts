@@ -27,6 +27,20 @@ export interface IArticleData {
   MAT_DT: Date
 }
 
+export interface ToDoData {
+  id: number
+  PRO_NAME: string
+  PRO_NODE_NAME: string
+  LAST_UPDATE_DATE: Date
+}
+
+export interface ProcessData {
+  insOperStatus: string
+  insOperUserName: string
+  insOperTime: Date
+  insOperComments: string
+}
+
 export interface IRoleData {
   key: string
   name: string

@@ -42,6 +42,7 @@ export default {
     inlineEditTable: '表格内编辑',
     complexTable: '综合表格',
     testTable: '测试表格',
+    todoList: '待办任务',
     tab: '分栏',
     form: '表单',
     createArticle: '创建文章',
@@ -146,7 +147,16 @@ export default {
     update: '修改',
     START_DT: '开始日期',
     MAT_DT: '结束日期',
-    CRM_CP_RATING: '交易对手评级'
+    CRM_CP_RATING: '交易对手评级',
+    // to-list
+    PRO_NAME: '流程名称',
+    PRO_NODE_NAME: '任务名称',
+    LAST_UPDATE_DATE: '提交时间',
+    PRO_INSTANCE_ID: '审批日志',
+    insOperStatus: '审批',
+    insOperUserName: '执行人',
+    insOperTime: '执行时间',
+    insOperComments: '备注'
   },
   example: {
     warning: '创建和编辑页面是不能被 keep-alive 缓存的，因为keep-alive 的 include 目前不支持根据路由来缓存，所以目前都是基于 component name 来进行缓存的。如果你想类似的实现缓存效果，可以使用 localStorage 等浏览器缓存方案。或者不要使用 keep-alive 的 include，直接缓存所有页面。详情见'

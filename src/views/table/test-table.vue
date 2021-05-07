@@ -21,9 +21,9 @@
         {{ $t('table.export') }}
       </el-button>
     </div>
-    <el-table :data="list" fit highlight-current-row style="width: 100%" @sort-change="sortChange">
+    <el-table :data="list" fit highlight-current-row style="width: 100%" @sort-change="sortChange" v-loading="listLoading" element-loading-text="拼命加载中">
       <el-table-column :label="$t('table.id')" align="center" width="95" prop="id" sortable="custom" :class-name="getSortClass('id')"></el-table-column>
-      <el-table-column prop="CRM_CODE" :label="$t('table.CRM_CODE')" align="center" width="120" sortable></el-table-column>
+      <el-table-column prop="CRM_CODE" :label="$t('table.CRM_CODE')" align="center" width="120"></el-table-column>
       <el-table-column prop="CRM_TYPE" :label="$t('table.CRM_TYPE')" align="center" class-name="" width="110"></el-table-column>
       <el-table-column prop="CCY_CODE" :label="$t('table.CCY_CODE')" align="center"></el-table-column>
       <el-table-column prop="CRM_VALUE_ORI" :label="$t('table.CRM_VALUE_ORI')" align="center" width="120"></el-table-column>
@@ -33,7 +33,6 @@
       <el-table-column prop="CRM_LT_RATING" :label="$t('table.CRM_LT_RATING')" align="center" width="110"></el-table-column>
       <el-table-column :label="$t('table.actions')" align="center" width="180">
         <template slot-scope="scope">
-          {{$t('table.actions')}}
           <el-button type="warning" size="mini" @click="handleUpdate(scope.row)">
             {{$t('table.edit')}}</el-button>
           <el-button type="danger" size="mini" @click="handleDelete(scope.$index)">
@@ -42,7 +41,7 @@
       </el-table-column>
     </el-table>
 
-    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
+    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" :page-sizes="[5, 10, 20, 30]" />
 
     <!-- 修改缓释品对话框 -->
     <el-dialog :title="textMap[dialogStatus]" :visible="dialogFormVisible" width="100%" @close="dialogFormVisible = false">
@@ -235,23 +234,44 @@ export default {
         create: 'Create'
       },
       startDatePicker: this.beginDate(),
-      endDatePicker: this.processDate()
+      endDatePicker: this.processDate(),
+      listLoading: true
     }
   },
   methods: {
     handleUpdate(row) {
+      this.dialogStatus = 'update'
       this.form = Object.assign({}, row)
       this.dialogFormVisible = !this.dialogFormVisible
       // this.$refs.dataForm.reset
     },
     //  private tempArticleData = defaultArticleData
     async getList() {
+      this.listLoading = true
       const { data } = await getArticles(this.listQuery)
       console.log(data)
       this.list = data.items
       this.total = data.total
+      // Just to simulate the time of the request
+      setTimeout(() => {
+        this.listLoading = false
+      }, 0.5 * 1000)
     },
-    handleDelete(index) {
+    async handleDelete(index) {
+      const confirmResult = await this.$confirm(
+        '此操作将会永久删除该记录，是否继续',
+        '提示',
+        {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }
+      ).catch((err) => {
+        return err
+      })
+      if (confirmResult !== 'confirm') {
+        return this.$message.info('已经取消删除')
+      }
       this.list.splice(index, 1)
       this.total = this.total - 1
       this.$notify({

@@ -40,6 +40,12 @@ const tableRoutes: RouteConfig = {
       component: () => import(/* webpackChunkName: "complex-table" */ '@/views/table/test-table.vue'),
       name: 'TestTable',
       meta: { title: 'testTable' }
+    },
+    {
+      path: 'todo-list',
+      component: () => import(/* webpackChunkName: "complex-table" */ '@/views/table/todo-list.vue'),
+      name: 'TodoList',
+      meta: { title: 'todoList' }
     }
   ]
 }
