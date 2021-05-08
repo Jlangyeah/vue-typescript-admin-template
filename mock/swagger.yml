@@ -286,7 +286,7 @@ paths:
   /process_logs:
     get:
       tags:
-        - articles
+        - process_logs
       summary: Get Todo List
       description: Return a list of todo.
       operationId: getTodoArticles
@@ -327,10 +327,54 @@ paths:
                         type: array
                         items:
                           $ref: '#/components/schemas/Article'         
+  /searchAudit:
+    get:
+      tags:
+        - searchAudit
+      summary: Get Todo List
+      description: Return a list of todo.
+      operationId: getAudit
+      parameters:
+        # - name: page
+        #   in: query
+        #   description: The wanted page number (one page).
+        #   schema:
+        #     type: integer
+        #     format: int32
+        #     minimum: 1
+        # - name: limit
+        #   in: query
+        #   description: The maximum number of articles returned for one page.
+        #   schema:
+        #     type: integer
+        #     format: int32
+        #     minimum: 0
+        #     maximum: 50
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                  data:
+                    type: object
+                    properties:
+                      total:
+                        type: integer
+                        format: int32
+                      items:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Article'    
   /process:
     get:
       tags:
-        - articles
+        - process
       summary: Get Todo List
       description: Return a list of todo.
       operationId: getProcessLogs
@@ -370,7 +414,7 @@ paths:
                       items:
                         type: array
                         items:
-                          $ref: '#/components/schemas/Article'          
+                          $ref: '#/components/schemas/Article'        
   /roles:
     get:
       tags:

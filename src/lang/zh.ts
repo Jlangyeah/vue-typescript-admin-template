@@ -43,6 +43,7 @@ export default {
     complexTable: '综合表格',
     testTable: '测试表格',
     todoList: '待办任务',
+    auditTable: '审计日志',
     tab: '分栏',
     form: '表单',
     createArticle: '创建文章',
@@ -156,7 +157,17 @@ export default {
     insOperStatus: '审批',
     insOperUserName: '执行人',
     insOperTime: '执行时间',
-    insOperComments: '备注'
+    insOperComments: '备注',
+    // audit-log
+    USER_NAME: '用户名称',
+    BRANCH_NAME: '机构名称',
+    LOG_LEVEL: '管控级别',
+    FUNC_LEVEL3_NAME: '功能模块',
+    LOG_TYPE: '操作类别',
+    LOG_DATE: '操作日期',
+    IP: 'IP地址',
+    LOG_DESCRIPTION: '操作说明',
+    LOG_RESULT: '操作结果'
   },
   example: {
     warning: '创建和编辑页面是不能被 keep-alive 缓存的，因为keep-alive 的 include 目前不支持根据路由来缓存，所以目前都是基于 component name 来进行缓存的。如果你想类似的实现缓存效果，可以使用 localStorage 等浏览器缓存方案。或者不要使用 keep-alive 的 include，直接缓存所有页面。详情见'

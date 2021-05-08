@@ -41,6 +41,18 @@ export interface ProcessData {
   insOperComments: string
 }
 
+export interface AuditData {
+  USER_NAME: string
+  BRANCH_NAME: string
+  LOG_LEVEL: string
+  FUNC_LEVEL3_NAME: string
+  LOG_TYPE: string
+  LOG_DATE: Date
+  IP: string
+  LOG_DESCRIPTION: string
+  LOG_RESULT: string
+}
+
 export interface IRoleData {
   key: string
   name: string

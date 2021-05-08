@@ -1,7 +1,16 @@
 <template>
   <div class="body">
     <!-- 待办任务 -->
-    <el-table :data="todoList" border fit style="width: 100%" element-loading-text="拼命加载中" :header-cell-style="{background: '#dcdcdc'}">
+    <div class="filter-container">
+      <el-input v-model="listQuery.PRO_NAME" :placeholder="$t('table.PRO_NAME')" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" @change="handleFilter" />
+      <el-select v-model="listQuery.PRO_NODE_NAME" :placeholder="$t('table.PRO_NODE_NAME')" clearable style="width: 160px" class="filter-item" @change="handleFilter">
+        <el-option v-for="item in OptionsObj.PRO_NODE_NAME" :key="item" :label="item" :value="item" />
+      </el-select>
+      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
+        {{ $t('table.search') }}
+      </el-button>
+    </div>
+    <el-table :data="todoList" border fit highlight-current-row style="width: 100%" element-loading-text="拼命加载中" :header-cell-style="{background: '#dcdcdc'}">
       <el-table-column :label="$t('table.PRO_NAME')" align="center" prop="PRO_NAME"></el-table-column>
       <el-table-column prop="PRO_NODE_NAME" :label="$t('table.PRO_NODE_NAME')" align="center"></el-table-column>
       <el-table-column prop="LAST_UPDATE_DATE" :label="$t('table.LAST_UPDATE_DATE')" align="center" class-name="" :formatter="formatDate">
@@ -24,7 +33,7 @@
         <el-table-column prop="insOperUserName" :label="$t('table.insOperUserName')" align="center"></el-table-column>
         <el-table-column prop="insOperTime" :label="$t('table.insOperTime')" align="center" :formatter="formatDate">
         </el-table-column>
-        <el-table-column prop="insOperComments" :label="$t('table.insOperComments')" align="center" class-name=""></el-table-column>
+        <el-table-column prop="insOperComments" :label="$t('table.insOperComments')" align="center" :show-overflow-tooltip="true"></el-table-column>
       </el-table>
       <div class="confirmBtn">
         <el-button type="primary" @click="ProcessDiaVisible = false">{{$t('table.confirm')}}</el-button>
@@ -34,7 +43,11 @@
 </template>
 
 <script>
-import { getTodoArticles, getProcessLogs } from '@/api/articles'
+import {
+  getTodoArticles,
+  getProcessLogs,
+  todoOptionsObj
+} from '@/api/articles'
 import Pagination from '@/components/Pagination/index.vue'
 export default {
   components: {
@@ -52,22 +65,29 @@ export default {
       total: null,
       listQuery: {
         page: 1,
-        limit: 10
+        limit: 10,
+        PRO_NAME: undefined,
+        PRO_NODE_NAME: undefined
       },
       // 审批对话框的显示与隐藏
       ProcessDiaVisible: false,
       // 审批列表
-      processList: []
+      processList: [],
+      // 下拉选项对象
+      OptionsObj: {
+        PRO_NAME: todoOptionsObj.PRO_NAME,
+        PRO_NODE_NAME: todoOptionsObj.PRO_NODE_NAME
+      }
     }
   },
   methods: {
     // 加载待办列表
     async loadTodoList() {
       this.listLoading = true
-      const { data } = await getTodoArticles()
+      const { data } = await getTodoArticles(this.listQuery)
       console.log(data)
-      this.todoList = data.todoList
-      this.total = this.todoList.length
+      this.todoList = data.items
+      this.total = data.total
     },
     // 监听审批
     async handleProcess() {
@@ -77,8 +97,6 @@ export default {
       console.log(data)
       this.processList = data.processList
     },
-    // 加载审批日志
-    // loadProcessLogs(processInstanceId) {},
     // 修改每页显示的多少条数据
     handleSizeChange(newSize) {
       this.pageSize = newSize
@@ -86,6 +104,11 @@ export default {
     // 修改当前的页数
     handleCurrentChange(newPage) {
       this.pageNum = newPage
+    },
+    // 搜索过滤
+    handleFilter() {
+      this.listQuery.page = 1
+      this.loadTodoList()
     },
     // 替换表格时间格式
     formatDate(row, column) {
@@ -136,5 +159,10 @@ export default {
   margin: 20px;
   display: flex;
   justify-content: flex-end;
+}
+/*设置显示隐藏部分内容，按50%显示*/
+.el-tooltip__popper {
+  font-size: 14px;
+  max-width: 50% !important;
 }
 </style>

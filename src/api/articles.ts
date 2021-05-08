@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-import { IArticleData, ToDoData, ProcessData } from './types'
+import { IArticleData, ToDoData, ProcessData, AuditData } from './types'
 
 export const defaultArticleData: IArticleData = {
   id: 0,
@@ -42,6 +42,19 @@ export const defaultProcessData: ProcessData = {
   insOperTime: new Date(),
   insOperComments: ''
 }
+
+export const defaultAuditData: AuditData = {
+  USER_NAME: '',
+  BRANCH_NAME: '',
+  LOG_LEVEL: '',
+  FUNC_LEVEL3_NAME: '',
+  LOG_TYPE: '',
+  LOG_DATE: new Date(),
+  IP: '',
+  LOG_DESCRIPTION: '',
+  LOG_RESULT: ''
+}
+
 export const optionsTypeObj = {
   CRM_TYPE: ['银行秉兑汇票(非特别授权)(ZY030106)', '质押-现金{CASH_CLAT}'],
   CCY_CODE: ['人民币(CNY)', '美元(USD)', '日元(JPY)', '欧元(EUR)'],
@@ -50,6 +63,11 @@ export const optionsTypeObj = {
   CRM_ST_RATING: ['A-1', 'A-2', 'A-3', 'B-1', 'N/A'],
   CRM_LT_RATING: ['AAA', 'AA', 'A', 'BBB', 'BB', 'B', 'C', 'N/A'],
   CRM_CP_RATING: ['AAA', 'AA', 'A', 'BBB', 'BB', 'B', 'C', 'N/A']
+}
+
+export const todoOptionsObj = {
+  PRO_NAME: ['数据补录审批流程', '新增审批流程', '修改审批流程'],
+  PRO_NODE_NAME: ['数据补录审批', '修改审批', '新增审批']
 }
 
 export const getArticles = (params: any) =>
@@ -62,6 +80,13 @@ export const getArticles = (params: any) =>
 export const getTodoArticles = (params: any) =>
   request({
     url: '/process_logs',
+    method: 'get',
+    params
+  })
+
+export const getAudit = (params: any) =>
+  request({
+    url: '/searchAudit',
     method: 'get',
     params
   })

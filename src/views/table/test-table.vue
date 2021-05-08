@@ -44,7 +44,7 @@
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" :page-sizes="[5, 10, 20, 30]" />
 
     <!-- 修改缓释品对话框 -->
-    <el-dialog :title="textMap[dialogStatus]" :visible="dialogFormVisible" width="100%" @close="dialogFormVisible = false">
+    <el-dialog :title="textMap[dialogStatus]" :visible="dialogFormVisible" width="85%" @close="dialogFormVisible = false">
       <el-form label-width='130px' label-position="left" :model="form" ref="dataForm" :rules="rules">
         <el-row>
           <el-col :span="8">

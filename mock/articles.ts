@@ -1,7 +1,6 @@
 import faker from 'faker'
-import fakerCN from 'faker/locale/zh_CN'
 import { Response, Request } from 'express'
-import { IArticleData, ToDoData, ProcessData } from '../src/api/types'
+import { IArticleData, ToDoData, ProcessData, AuditData } from '../src/api/types'
 
 const articleList: IArticleData[] = []
 const articleCount = 100
@@ -13,13 +12,30 @@ const todoCount = 100
 const processList: ProcessData[] = []
 const processCount = 5
 
-faker.setLocale('zh_CN')
+const auditList: AuditData[] = []
+const auditCount = 5
+
+for (let i = 0; i < auditCount; i++) {
+  auditList.push({
+    USER_NAME: 'admin(' + faker.datatype.number({ min: 1, max: 9 }) + ')',
+    BRANCH_NAME: '全行汇总(' + faker.datatype.number({ min: 10000, max: 99999 }) + ')',
+    LOG_LEVEL: faker.random.arrayElement(['低', '中', '高']),
+    FUNC_LEVEL3_NAME: faker.random.arrayElement(['数据预处理>数据质量检查', '数据预处理>数据质量修改', '数据预处理>数据质量删除']),
+    LOG_TYPE: faker.random.arrayElement(['查看', '编辑', '删除', '更新', '导入', '导出', '执行']),
+    LOG_DATE: faker.date.soon(),
+    IP: faker.internet.ip(),
+    LOG_DESCRIPTION: faker.commerce.productDescription(),
+    LOG_RESULT: faker.random.arrayElement(['开始处理', '处理结束'])
+  })
+}
+
+// faker.setLocale('zh_CN')
 for (let i = 0; i < processCount; i++) {
   processList.push({
-    insOperStatus: faker.random.arrayElement(['提交审批', '撤回审批', '新增审批']),
+    insOperStatus: faker.random.arrayElement(['提交审批', '撤回修改', '审批通过', '驳回修改']),
     insOperUserName: faker.random.arrayElement(['系统管理员A', '系统管理员B', '系统管理员C', '系统管理员D', '系统管理员E']),
     insOperTime: faker.date.soon(),
-    insOperComments: faker.internet.userName() + faker.name.firstName()
+    insOperComments: faker.finance.transactionDescription()
   })
 }
 
@@ -111,19 +127,35 @@ export const getArticle = (req: Request, res: Response) => {
 }
 
 export const getTodoArticles = (req: Request, res: Response) => {
-  // for (const article of todoList) {
-  // if (true) {
+  const { page = 1, limit = 10, PRO_NAME, PRO_NODE_NAME } = req.query
+
+  const mockList = todoList.filter(item => {
+    // if (CRM_TYPE && item.CRM_TYPE.indexOf(CRM_TYPE as string) < 0) return false
+    // if (CCY_CODE && item.CCY_CODE !== CCY_CODE) return false
+    // if (CRM_ST_RATING && item.CRM_ST_RATING !== CRM_ST_RATING) return false
+    if (PRO_NAME && item.PRO_NAME.indexOf(PRO_NAME as string) < 0) return false
+    if (PRO_NODE_NAME && item.PRO_NODE_NAME !== PRO_NODE_NAME) return false
+
+    return true
+  })
+
+  const pageList = mockList.filter((_, index) => index < (limit as number) * (page as number) && index >= (limit as number) * (page as number - 1))
+
   return res.json({
     code: 20000,
     data: {
-      todoList
+      total: mockList.length,
+      items: pageList
     }
   })
-  // }
-  // }
+}
+
+export const getAudit = (req: Request, res: Response) => {
   return res.json({
-    code: 70001,
-    message: 'Article not found'
+    code: 20000,
+    data: {
+      auditList
+    }
   })
 }
 

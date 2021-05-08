@@ -46,6 +46,12 @@ const tableRoutes: RouteConfig = {
       component: () => import(/* webpackChunkName: "complex-table" */ '@/views/table/todo-list.vue'),
       name: 'TodoList',
       meta: { title: 'todoList' }
+    },
+    {
+      path: 'audit-table',
+      component: () => import(/* webpackChunkName: "complex-table" */ '@/views/table/audit-log.vue'),
+      name: 'auditTable',
+      meta: { title: 'auditTable' }
     }
   ]
 }
