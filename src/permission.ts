@@ -1,11 +1,11 @@
-import router from './router'
+import i18n from '@/lang'; // Internationalization
+import { PermissionModule } from '@/store/modules/permission'
+import { UserModule } from '@/store/modules/user'
+import { Message } from 'element-ui'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
-import { Message } from 'element-ui'
 import { Route } from 'vue-router'
-import { UserModule } from '@/store/modules/user'
-import { PermissionModule } from '@/store/modules/permission'
-import i18n from '@/lang' // Internationalization
+import router from './router'
 import settings from './settings'
 
 NProgress.configure({ showSpinner: false })
@@ -38,6 +38,7 @@ router.beforeEach(async(to: Route, _: Route, next: any) => {
           // Note: roles must be a object array! such as: ['admin'] or ['developer', 'editor']
           await UserModule.GetUserInfo()
           const roles = UserModule.roles
+          debugger
           // Generate accessible routes map based on role
           PermissionModule.GenerateRoutes(roles)
           // Dynamically add accessible routes

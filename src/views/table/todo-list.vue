@@ -1,168 +1,178 @@
 <template>
-  <div class="body">
-    <!-- 待办任务 -->
-    <div class="filter-container">
-      <el-input v-model="listQuery.PRO_NAME" :placeholder="$t('table.PRO_NAME')" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" @change="handleFilter" />
-      <el-select v-model="listQuery.PRO_NODE_NAME" :placeholder="$t('table.PRO_NODE_NAME')" clearable style="width: 160px" class="filter-item" @change="handleFilter">
-        <el-option v-for="item in OptionsObj.PRO_NODE_NAME" :key="item" :label="item" :value="item" />
-      </el-select>
-      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
-        {{ $t('table.search') }}
-      </el-button>
-    </div>
-    <el-table :data="todoList" border fit highlight-current-row style="width: 100%" element-loading-text="拼命加载中" :header-cell-style="{background: '#dcdcdc'}">
-      <el-table-column :label="$t('table.PRO_NAME')" align="center" prop="PRO_NAME"></el-table-column>
-      <el-table-column prop="PRO_NODE_NAME" :label="$t('table.PRO_NODE_NAME')" align="center"></el-table-column>
-      <el-table-column prop="LAST_UPDATE_DATE" :label="$t('table.LAST_UPDATE_DATE')" align="center" class-name="" :formatter="formatDate">
-      </el-table-column>
-      <el-table-column :label="$t('table.actions')" align="center" width="180">
-        <template slot-scope="scope">
-          <!-- <el-button size="mini" @click="handleProcess(scope.row)">
-            {{$t('table.PRO_INSTANCE_ID')}}</el-button> -->
-          <div class="processBtn" @click="handleProcess(scope.row)">{{$t('table.PRO_INSTANCE_ID')}}</div>
-        </template>
-      </el-table-column>
-    </el-table>
-
-    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="loadTodoList" :page-sizes="[5, 10, 20, 30]" />
-
-    <!-- 审批日志 -->
-    <el-dialog title="日志查询" :visible="ProcessDiaVisible" width="70%" @close="ProcessDiaVisible = false">
-      <el-table :data="processList" fit highlight-current-row style="width: 100%" element-loading-text="拼命加载中" :header-cell-style="{background: '#dcdcdc'}">
-        <el-table-column :label="$t('table.insOperStatus')" align="center" prop="insOperStatus"></el-table-column>
-        <el-table-column prop="insOperUserName" :label="$t('table.insOperUserName')" align="center"></el-table-column>
-        <el-table-column prop="insOperTime" :label="$t('table.insOperTime')" align="center" :formatter="formatDate">
-        </el-table-column>
-        <el-table-column prop="insOperComments" :label="$t('table.insOperComments')" align="center" :show-overflow-tooltip="true"></el-table-column>
-      </el-table>
-      <div class="confirmBtn">
-        <el-button type="primary" @click="ProcessDiaVisible = false">{{$t('table.confirm')}}</el-button>
-      </div>
-    </el-dialog>
+  <div class="myWrap">
+    <h2>填写表单</h2>
+    <br />
+    <my-form
+      ref="myForm"
+      :formHeader="formHeader"
+      @submitForm="submitForm"
+      @resetForm="resetForm"
+    ></my-form>
+    <h2>表单数据回显</h2>
+    <el-button size="small" type="primary" @click="showData"
+      >点击按钮回显数据</el-button
+    >
   </div>
 </template>
-
 <script>
-import {
-  getTodoArticles,
-  getProcessLogs,
-  todoOptionsObj
-} from '@/api/articles'
-import Pagination from '@/components/Pagination/index.vue'
+import myForm from '@/components/MyForm/index.vue'
 export default {
   components: {
-    pagination: Pagination
-  },
-  created() {
-    this.loadTodoList()
+    myForm
   },
   data() {
     return {
-      // 待办列表
-      todoList: [],
-      listLoading: false,
-      // 总记录条数
-      total: null,
-      listQuery: {
-        page: 1,
-        limit: 10,
-        PRO_NAME: undefined,
-        PRO_NODE_NAME: undefined
-      },
-      // 审批对话框的显示与隐藏
-      ProcessDiaVisible: false,
-      // 审批列表
-      processList: [],
-      // 下拉选项对象
-      OptionsObj: {
-        PRO_NAME: todoOptionsObj.PRO_NAME,
-        PRO_NODE_NAME: todoOptionsObj.PRO_NODE_NAME
-      }
+      // 表头数组数据
+      formHeader: [
+        /**
+         * 输入框类型3种
+         *    1. 普通文本输入框 text
+         *    2. 数字类型输入框 number
+         *    3. 文本域输入框 textarea
+         *
+         * 下拉框select类型2中
+         *    1. 固定配置的el-option selectOne
+         *    2. 枚举值的el-option单选 selectTwo
+         *    2. 枚举值的el-option多选 selectThree
+         *
+         * 时间选择器类型1种
+         *    1. 两个时间选择器、选取一个范围
+         *
+         * 等等，还有其他类型，这里举三种类型，别的类型仿照着即可写出来
+         * 组件封装适可而止。如果是比较复杂（奇葩）的需要联动的表单，建议一个个写
+         * 毕竟过度的封装，会导致代码不好维护（个人愚见）
+         *
+         * */
+        {
+          itemType: 'text', // 输入框类型
+          labelName: '姓名', // 输入框名字
+          propName: 'name', // 输入框字段名
+          isRequired: true, // 是否必填
+          placeholder: '请填写名字' // 输入框placeholder提示语加上，可用于告知用户规则
+        },
+        {
+          itemType: 'number',
+          labelName: '年龄',
+          propName: 'age',
+          isRequired: true,
+          unit: 'year', // 数字类型的要有单位
+          placeholder: '请输入年龄（大于0的正整数）'
+        },
+        {
+          itemType: 'number',
+          labelName: '工资',
+          propName: 'salary',
+          isRequired: true,
+          unit: '元/月', // 数字类型的要有单位
+          placeholder: '请输入每月工资金额（大于0且保留两位小数）'
+        },
+        {
+          itemType: 'textarea',
+          labelName: '备注',
+          propName: 'remark',
+          isRequired: true,
+          placeholder: '请填写备注'
+        },
+        {
+          itemType: 'selectOne', // 下拉框类型一，固定的选项可以写死在配置里，比如性别只有男女
+          labelName: '性别',
+          propName: 'gender',
+          isRequired: true,
+          placeholder: '请选择性别',
+          optionsArr: [
+            {
+              label: '男',
+              value: 1
+            },
+            {
+              label: '女',
+              value: 2
+            }
+          ]
+        },
+        {
+          itemType: 'selectTwo', // 下拉框类型二，枚举值单选，在点击下拉选项时根据枚举id发请求，获取枚举值
+          labelName: '可选职业',
+          propName: 'job',
+          isRequired: true,
+          placeholder: '请选择职业',
+          enumerationId: '123123123'
+        },
+        {
+          itemType: 'selectTwo', // 下拉框类型二，枚举值单选，在点击下拉选项时根据枚举id发请求，获取枚举值
+          labelName: '愿望',
+          propName: 'wish',
+          isRequired: true,
+          placeholder: '请选择愿望',
+          enumerationId: '456456456'
+        },
+        {
+          itemType: 'selectThree', // 下拉框类型三，枚举值多选，在点击下拉选项时根据枚举id发请求，获取枚举值
+          labelName: '爱好',
+          propName: 'hobby',
+          isRequired: true,
+          placeholder: '请选择爱好',
+          enumerationId: '789789789'
+        },
+        {
+          itemType: 'selectThree', // 下拉框类型三，枚举值多选，在点击下拉选项时根据枚举id发请求，获取枚举值
+          labelName: '想买手机',
+          propName: 'wantPhone',
+          isRequired: true,
+          placeholder: '请选择手机',
+          enumerationId: '147258369'
+        },
+        {
+          itemType: 'dateRange', // 日期范围类型
+          labelName: '日期',
+          propName: 'date',
+          isRequired: true
+        }
+      ]
     }
   },
+  mounted() {
+    // 数据回显的时候，要先发请求获取枚举值下拉框的值才能够正确的回显，所以
+    // 就提前发请求获取对应下拉框的值了，这里要注意！注意！注意！
+    this.formHeader.forEach(item => {
+      if ((item.itemType == 'selectTwo') | (item.itemType == 'selectThree')) {
+        this.$refs.myForm.getOptionsArrData(item)
+      }
+    })
+  },
   methods: {
-    // 加载待办列表
-    async loadTodoList() {
-      this.listLoading = true
-      const { data } = await getTodoArticles(this.listQuery)
-      console.log(data)
-      this.todoList = data.items
-      this.total = data.total
-    },
-    // 监听审批
-    async handleProcess() {
-      this.ProcessDiaVisible = true
-      // console.log(row);
-      const { data } = await getProcessLogs(this.listQuery)
-      console.log(data)
-      this.processList = data.processList
-    },
-    // 修改每页显示的多少条数据
-    handleSizeChange(newSize) {
-      this.pageSize = newSize
-    },
-    // 修改当前的页数
-    handleCurrentChange(newPage) {
-      this.pageNum = newPage
-    },
-    // 搜索过滤
-    handleFilter() {
-      this.listQuery.page = 1
-      this.loadTodoList()
-    },
-    // 替换表格时间格式
-    formatDate(row, column) {
-      // 获取单元格数据
-      const date = row[column.property]
-      if (date) {
-        return this.transformDate(date)
-      } else {
-        return ''
+    showData() {
+      const apiData = {
+        name: '孙悟空',
+        age: 500,
+        salary: 6666.66,
+        remark: '齐天大圣是也',
+        gender: 1, // 1代表男
+        job: 1, // 1医生 2教师 3公务员
+        wish: 3, // 1成为百万富翁 2长生不老 3家人健康幸福平安
+        hobby: [1, 2, 3], // 1乒乓球 2羽毛球 3篮球
+        wantPhone: [1, 2, 4], // 1华为 2小米 3苹果 4三星
+        date: ['2018-06-06', '2022-05-05']
       }
+      setTimeout(() => {
+        this.$refs.myForm.form = apiData
+      }, 300)
     },
-    // 标准时间格式转yyyy-MM-dd HH:mm:ss
-    transformDate(date) {
-      if (date) {
-        const dt = new Date(date)
-        return (
-          dt.getFullYear() +
-          '-' +
-          (dt.getMonth() + 1 < 10
-            ? '0' + (dt.getMonth() + 1)
-            : dt.getMonth() + 1) +
-          '-' +
-          (dt.getDate() < 10 ? '0' + dt.getDate() : dt.getDate()) +
-          ' ' +
-          (dt.getHours() < 10 ? '0' + dt.getHours() : dt.getHours()) +
-          ':' +
-          (dt.getMinutes() < 10 ? '0' + dt.getMinutes() : dt.getMinutes()) +
-          ':' +
-          (dt.getSeconds() < 10 ? '0' + dt.getSeconds() : dt.getSeconds())
-        )
-      } else {
-        return ''
-      }
+    submitForm(form) {
+      console.log('表单提交喽', form)
+    },
+    resetForm() {
+      console.log('表单重置喽')
     }
   }
 }
 </script>
-
-<style scoped>
-.body {
-  padding: 20px;
-}
-.processBtn {
-  cursor: pointer;
-  color: #1890ff;
-}
-.confirmBtn {
-  margin: 20px;
-  display: flex;
-  justify-content: flex-end;
-}
-/*设置显示隐藏部分内容，按50%显示*/
-.el-tooltip__popper {
-  font-size: 14px;
-  max-width: 50% !important;
+<style lang='scss' scoped>
+.myWrap {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 25px;
+  overflow-y: auto;
 }
 </style>

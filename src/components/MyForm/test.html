@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <div>{{ message }}</div>
+        <div>
+            <ul v-for="(item,index) in testData" v-bind:key="index">
+                <li>{{item.id}}<span>:{{item.name}}</span></li>
+            </ul>
+        </div>
+    </div>
+    <script src="./vue.js"></script>
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                message: 'Hello Vue!',
+                // 获取到的数据
+                testData: []
+            },
+            created() {
+                this.getJsonData()
+            },
+            methods: {
+                getJsonData: function () {
+                    var that = this;
+                    // 需要放置的数据
+                    var jsonData = ['张三', '里斯', '王五', '效力', '张三', '里斯', '王五', '效力', '张三', '里斯', '王五', '效力','张三', '里斯', '王五', '效力', '张三', '里斯', '王五', '效力', '张三', '里斯', '王五', '效力','张三', '里斯', '王五', '效力', '张三', '里斯', '王五', '效力', '张三', '里斯', '王五', '效力','张三', '里斯', '王五', '效力', '张三', '里斯', '王五', '效力', '张三', '里斯', '王五', '效力','张三', '里斯', '王五', '效力', '张三', '里斯', '王五', '效力', '张三', '里斯', '王五', '效力','张三', '里斯', '王五', '效力', '张三', '里斯', '王五', '效力', '张三', '里斯', '王五', '效力','张三', '里斯', '王五', '效力', '张三', '里斯', '王五', '效力', '张三', '里斯', '王五', '效力','张三', '里斯', '王五', '效力', '张三', '里斯', '王五', '效力', '张三', '里斯', '王五', '效力','张三', '里斯', '王五', '效力', '张三', '里斯', '王五', '效力', '张三', '里斯', '王五', '效力'];
+                    let newArray = [];
+                    function fn() {
+                        let arrays = [];
+                        var data = {};
+                        for (i = 0; i < jsonData.length; i++) {
+                            var key = jsonData[i];
+                            var val = newArray[i];
+                            data[key] = val;
+                            arrays.push(data[key])
+                        }
+                        return arrays;
+                    }
+                    for (var i = 0; i < jsonData.length; i++) {
+                        let personOne = {
+                            id: i,
+                            name: jsonData[i]
+                        };
+                        // 动态生成的数据
+                        newArray.push(personOne)
+                    }
+                    console.log(fn());
+                    that.testData = fn()
+
+                }
+            }
+        })
+    </script>
+    <!-- <script  type="text/javascript">
+var jsonData = ['张三','里斯','王五','效力','张三','里斯','王五','效力','张三','里斯','王五','效力'];
+let newArray = [];
+    function fn(){
+        let arrays = [];
+           var  data = {};
+           for(i = 0;i<jsonData.length;i++){
+               var  key = jsonData[i];
+               var  val = newArray[i];
+               data[key] = val;
+               arrays.push(data[key])
+           }
+           return arrays;
+       }
+    for(var i = 0;i<jsonData.length;i++){
+            let personOne = {
+                id:i,
+                name:jsonData[i]
+            };
+            // 动态生成的数据
+            newArray.push(personOne)
+    }
+    console.log(fn()) 
+    </script> -->
+</body>
+
+</html>
